@@ -8,6 +8,7 @@ static const unsigned int gappiv   = 20;       /* vert inner gap between windows
 static const unsigned int gappoh   = 20;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov   = 20;       /* vert outer gap between windows and screen edge */
 static       int smartgaps         = 0;        /* 1 means no outer gap when there is only one window */
+static const int rmaster           = 1;        /* 1 means master-area is initially on the right */
 static const int showbar           = 1;        /* 0 means no bar */
 static const int topbar            = 1;        /* 0 means bottom bar */
 static const int bhpad             = 15;       /* amount to add on to default calculated by dwm */
@@ -91,6 +92,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,         XK_Return,          zoom,               {0} },
     { MODKEY,                   XK_Tab,             focusmaster,        {0} },
     { MODKEY|ShiftMask,         XK_Tab,             togglefullscr,      {0} },
+    { MODKEY,                   XK_r,               togglermaster,      {0} },
     { MODKEY,                   XK_j,               focusstack,         {.i = +1 } },
     { MODKEY,                   XK_k,               focusstack,         {.i = -1 } },
     { MODKEY|ShiftMask,         XK_j,               pushdown,           {0} },
