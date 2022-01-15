@@ -1838,7 +1838,7 @@ void
 togglermaster(const Arg *arg)
 {
 	selmon->rmaster = !selmon->rmaster;
-	// selmon->mfact = 1.0 - selmon->mfact; /* mfact now represents the left factor */
+	selmon->mfact = 1.0 - selmon->mfact; /* mfact now represents the left factor */
 	if (selmon->lt[selmon->sellt]->arrange)
 		arrange(selmon);
 }
