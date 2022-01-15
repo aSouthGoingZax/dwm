@@ -46,3 +46,22 @@ Configuration
 -------------
 The configuration of dwm is done by creating a custom config.h
 and (re)compiling the source code.
+
+
+Applied patches
+---------------
+activetagindicatorbar
+actualfullscreen
+alpha
+alwayscenter
+alwaysfullscreen
+bar-height
+cfacts
+colorbar
+cursorwarp
+focusmaster
+noborderfloatingfix
+pertag
+push_no_master
+vanitygaps
+winview
