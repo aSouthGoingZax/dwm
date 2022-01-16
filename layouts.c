@@ -307,10 +307,10 @@ deck(Monitor *m)
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
-			resize(c, mx, my, mw - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
+			resize(c, m->rmaster ? sx : mx, my, (m->rmaster ? sw : mw) - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
-			resize(c, sx, sy, sw - (2*c->bw), sh - (2*c->bw), 0);
+			resize(c, m->rmaster ? mx : sx, sy, (m->rmaster ? mw : sw) - (2*c->bw), sh - (2*c->bw), 0);
 		}
 }
 
@@ -403,16 +403,16 @@ tile(Monitor *m)
 	if (n == 0)
 		return;
 
-	sx = mx = m->wx + ov; // 20
+	sx = mx = m->wx + ov;
 	sy = my = m->wy + oh;
 	mh = m->wh - 2*oh - ih * (MIN(n, m->nmaster) - 1);
 	sh = m->wh - 2*oh - ih * (n - m->nmaster - 1);
-	sw = mw = m->ww - 2*ov; // 3840 - (2 * 20) = 3800
+	sw = mw = m->ww - 2*ov;
 
 	if (m->nmaster && n > m->nmaster) {
-		sw = (mw - iv) * (1.0 - m->mfact); // (3800 - 20) * (1 - 0.6) = 3780 * 0.4 = 1512
-		mw = mw - iv - sw; // 3800 - 20 - 1512 = 2268
-		sx = mx + mw + iv; // 20 + 2268 + 20 = 2308
+		sw = (mw - iv) * (1.0 - m->mfact);
+		mw = mw - iv - sw;
+		sx = mx + mw + iv;
 	}
 
 	getfacts(m, mh, sh, &mfacts, &sfacts, &mrest, &srest);
