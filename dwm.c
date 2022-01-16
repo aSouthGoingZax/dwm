@@ -29,9 +29,7 @@
 //  - only the focused window has a border if there are multiple windows
 //    > the unfocused windows should have a completely transparent border but one that is still there
 //    > otherwise windows will need to be resized if the border width is set to 0 as focus is shifted around
-// 3) implement right master patch
-//  - update layouts to work with it
-// 4) rework  centeredmaster()  to be a column layout which automatically sets the proportions
+// 3) rework  centeredmaster()  to be a column layout which automatically sets the proportions
 //  - equal amount of screen space per window
 //  - but the proportions can still be changed by calling  setmfact()
 //  - rename the function to  equalcolumns()
