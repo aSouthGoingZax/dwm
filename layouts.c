@@ -181,7 +181,7 @@ bstack(Monitor *m)
 }
 
 /*
- * Centred master layout + gaps
+ * Centered master layout + gaps
  * https://dwm.suckless.org/patches/centeredmaster/
  */
 static void
@@ -213,12 +213,14 @@ centeredmaster(Monitor *m)
 		/* go mfact box in the center if more than nmaster clients */
 		if (n - m->nmaster > 1) {
 			/* ||<-S->|<---M--->|<-S->|| */
+            m->mfact = 0.35;
 			mw = (m->ww - 2*ov - 2*iv) * m->mfact;
 			lw = (m->ww - mw - 2*ov - 2*iv) / 2;
 			rw = (m->ww - mw - 2*ov - 2*iv) - lw;
 			mx += lw + iv;
 		} else {
 			/* ||<---M--->|<-S->|| */
+            m->mfact = 0.5;
 			mw = (mw - iv) * m->mfact;
 			lw = 0;
 			rw = m->ww - mw - iv - 2*ov;
