@@ -161,7 +161,7 @@ bstack(Monitor *m)
 	sw = m->ww - 2*ov - iv * (n - m->nmaster - 1);
 
 	if (m->nmaster && n > m->nmaster) {
-		sh = (mh - ih) * (1.0 - m->mfact);
+		sh = (mh - ih) * (m->rmaster ? m->mfact : (1.0 - m->mfact));
 		mh = mh - ih - sh;
 		sx = mx;
 		sy = my + mh + ih;
