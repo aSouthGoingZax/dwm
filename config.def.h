@@ -8,6 +8,7 @@ static const unsigned int gappiv   = 20;       /* vert inner gap between windows
 static const unsigned int gappoh   = 20;       /* horiz outer gap between windows and screen edge */
 static const unsigned int gappov   = 20;       /* vert outer gap between windows and screen edge */
 static       int smartgaps         = 0;        /* 1 means no outer gap when there is only one window */
+static const int rmaster           = 1;        /* 1 means master area is initially on the right */
 static const int showbar           = 1;        /* 0 means no bar */
 static const int topbar            = 1;        /* 0 means bottom bar */
 static const int bhpad             = 15;       /* amount to add on to default calculated by dwm */
@@ -43,7 +44,7 @@ static const Rule rules[] = {
 };
 
 /* layouts */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.45; /* factor of master area size [0.05 - 0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -91,6 +92,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,         XK_Return,          zoom,               {0} },
     { MODKEY,                   XK_Tab,             focusmaster,        {0} },
     { MODKEY|ShiftMask,         XK_Tab,             togglefullscr,      {0} },
+    { MODKEY,                   XK_r,               togglermaster,      {0} },
     { MODKEY,                   XK_j,               focusstack,         {.i = +1 } },
     { MODKEY,                   XK_k,               focusstack,         {.i = -1 } },
     { MODKEY|ShiftMask,         XK_j,               pushdown,           {0} },
@@ -150,7 +152,7 @@ static Key keys[] = {
     { Mod5Mask,	                XK_p,               spawn,              SHCMD("password-helper") },
     { Mod5Mask,	                XK_r,               spawn,              SHCMD("screen-temp") },
     { Mod5Mask,	                XK_t,               spawn,              SHCMD("term-progs") },
-    { Mod5Mask,	                XK_v,               spawn,              SHCMD("volume-change") },
+    { Mod5Mask,	                XK_v,               spawn,              SHCMD("volume-set") },
 };
 
 /* button definitions */

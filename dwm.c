@@ -29,12 +29,6 @@
 //  - only the focused window has a border if there are multiple windows
 //    > the unfocused windows should have a completely transparent border but one that is still there
 //    > otherwise windows will need to be resized if the border width is set to 0 as focus is shifted around
-// 3) implement right master patch
-//  - update layouts to work with it
-// 4) rework  centeredmaster()  to be a column layout which automatically sets the proportions
-//  - equal amount of screen space per window
-//  - but the proportions can still be changed by calling  setmfact()
-//  - rename the function to  equalcolumns()
 
 #include <errno.h>
 #include <locale.h>
@@ -145,6 +139,7 @@ struct Monitor {
 	unsigned int seltags;
 	unsigned int sellt;
 	unsigned int tagset[2];
+	int rmaster;
 	int showbar;
 	int topbar;
 	Client *clients;
@@ -239,6 +234,7 @@ static void tagmon(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void togglefullscr(const Arg *arg);
+static void togglermaster(const Arg *arg);
 static void toggletag(const Arg *arg);
 static void toggleview(const Arg *arg);
 static void unfocus(Client *c, int setfocus);
@@ -680,6 +676,7 @@ createmon(void)
 	m->tagset[0] = m->tagset[1] = 1;
 	m->mfact = mfact;
 	m->nmaster = nmaster;
+	m->rmaster = rmaster;
 	m->showbar = showbar;
 	m->topbar = topbar;
 	m->gappih = gappih;
@@ -1829,6 +1826,15 @@ togglefullscr(const Arg *arg)
 {
     if(selmon->sel)
         setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
+}
+
+void
+togglermaster(const Arg *arg)
+{
+	selmon->rmaster = !selmon->rmaster;
+	selmon->mfact = 1.0 - selmon->mfact; /* mfact now represents the left factor */
+	if (selmon->lt[selmon->sellt]->arrange)
+		arrange(selmon);
 }
 
 void

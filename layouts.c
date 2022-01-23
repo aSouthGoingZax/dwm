@@ -161,7 +161,7 @@ bstack(Monitor *m)
 	sw = m->ww - 2*ov - iv * (n - m->nmaster - 1);
 
 	if (m->nmaster && n > m->nmaster) {
-		sh = (mh - ih) * (1.0 - m->mfact);
+		sh = (mh - ih) * (m->rmaster ? m->mfact : (1.0 - m->mfact));
 		mh = mh - ih - sh;
 		sx = mx;
 		sy = my + mh + ih;
@@ -181,7 +181,7 @@ bstack(Monitor *m)
 }
 
 /*
- * Centred master layout + gaps
+ * Centered master layout + gaps
  * https://dwm.suckless.org/patches/centeredmaster/
  */
 static void
@@ -213,13 +213,13 @@ centeredmaster(Monitor *m)
 		/* go mfact box in the center if more than nmaster clients */
 		if (n - m->nmaster > 1) {
 			/* ||<-S->|<---M--->|<-S->|| */
-			mw = (m->ww - 2*ov - 2*iv) * m->mfact;
+			mw = (m->ww - 2*ov - 2*iv) * 0.35 /* m->mfact */;
 			lw = (m->ww - mw - 2*ov - 2*iv) / 2;
 			rw = (m->ww - mw - 2*ov - 2*iv) - lw;
 			mx += lw + iv;
 		} else {
 			/* ||<---M--->|<-S->|| */
-			mw = (mw - iv) * m->mfact;
+			mw = (mw - iv) * 0.5 /* m->mfact */;
 			lw = 0;
 			rw = m->ww - mw - iv - 2*ov;
 		}
@@ -254,15 +254,15 @@ centeredmaster(Monitor *m)
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 		if (!m->nmaster || i < m->nmaster) {
 			/* nmaster clients are stacked vertically, in the center of the screen */
-			resize(c, mx, my, mw - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
+			resize(c, (n == 2 && m->rmaster) ? rx : mx, my, ((n == 2 && m->rmaster) ? rw : mw) - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
 			/* stack clients are stacked vertically */
-			if ((i - m->nmaster) % 2 ) {
+			if ((i - m->nmaster) % 2) {
 				resize(c, lx, ly, lw - (2*c->bw), lh * (c->cfact / lfacts) + ((i - 2*m->nmaster) < 2*lrest ? 1 : 0) - (2*c->bw), 0);
 				ly += HEIGHT(c) + ih;
 			} else {
-				resize(c, rx, ry, rw - (2*c->bw), rh * (c->cfact / rfacts) + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0) - (2*c->bw), 0);
+				resize(c, (n == 2 && m->rmaster) ? mx : rx, ry, ((n == 2 && m->rmaster) ? mw : rw) - (2*c->bw), rh * (c->cfact / rfacts) + ((i - 2*m->nmaster) < 2*rrest ? 1 : 0) - (2*c->bw), 0);
 				ry += HEIGHT(c) + ih;
 			}
 		}
@@ -307,10 +307,10 @@ deck(Monitor *m)
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
-			resize(c, mx, my, mw - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
+			resize(c, m->rmaster ? sx : mx, my, (m->rmaster ? sw : mw) - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
-			resize(c, sx, sy, sw - (2*c->bw), sh - (2*c->bw), 0);
+			resize(c, m->rmaster ? mx : sx, sy, (m->rmaster ? mw : sw) - (2*c->bw), sh - (2*c->bw), 0);
 		}
 }
 
@@ -419,10 +419,10 @@ tile(Monitor *m)
 
 	for (i = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if (i < m->nmaster) {
-			resize(c, mx, my, mw - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
+			resize(c, m->rmaster ? sx : mx, my, (m->rmaster ? sw : mw) - (2*c->bw), mh * (c->cfact / mfacts) + (i < mrest ? 1 : 0) - (2*c->bw), 0);
 			my += HEIGHT(c) + ih;
 		} else {
-			resize(c, sx, sy, sw - (2*c->bw), sh * (c->cfact / sfacts) + ((i - m->nmaster) < srest ? 1 : 0) - (2*c->bw), 0);
+			resize(c, m->rmaster ? mx : sx, sy, (m->rmaster ? mw : sw) - (2*c->bw), sh * (c->cfact / sfacts) + ((i - m->nmaster) < srest ? 1 : 0) - (2*c->bw), 0);
 			sy += HEIGHT(c) + ih;
 		}
 }
