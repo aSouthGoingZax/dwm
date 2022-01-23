@@ -8,3 +8,8 @@
 *.temp
 *.rej
 *.orig
+
+config.h
+dwm
+example_config.h
+patches/
