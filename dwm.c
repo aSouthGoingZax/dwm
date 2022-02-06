@@ -24,11 +24,6 @@
 // TODO:
 // 1) disable the following functions if a window is fullscreen:
 //  - spawn(), zoom(), focusmaster(), pushdown(), pushup(), setmfact(), setcfact(), setlayout(), togglefloating(), winview(), view()
-// 2) draw borders so that...
-//  - no borders are shown if there is only one window
-//  - only the focused window has a border if there are multiple windows
-//    > the unfocused windows should have a completely transparent border but one that is still there
-//    > otherwise windows will need to be resized if the border width is set to 0 as focus is shifted around
 
 #include <errno.h>
 #include <locale.h>
