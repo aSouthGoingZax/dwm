@@ -141,6 +141,8 @@ static Key keys[] = {
     { MODKEY|ShiftMask,         XK_q,               quit,               {0} },
     { Mod4Mask,                 XK_w,               spawn,              {.v = browsercmd } },
     { Mod4Mask,                 XK_f,               spawn,              {.v = filemgrcmd } },
+    { 0,                        XK_Print,           spawn,              SHCMD("screenshot") },
+    { ControlMask,              XK_Print,           spawn,              SHCMD("screenshot -f") },
     { MODKEY|ControlMask,       XK_Delete,          spawn,              SHCMD("power-actions") },
     { 0,                XF86XK_AudioRaiseVolume,    spawn,              SHCMD("pactl set-sink-volume 0 +1%") },
     { 0,                XF86XK_AudioLowerVolume,    spawn,              SHCMD("pactl set-sink-volume 0 -1%") },
